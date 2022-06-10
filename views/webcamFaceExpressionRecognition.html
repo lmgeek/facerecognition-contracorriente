@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="face-api.js"></script>
+  <script src="js/commons.js"></script>
+  <script src="js/faceDetectionControls.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+  <style>
+    body {font-family: 'Permanent Marker', cursive;}
+
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      max-height: 100%;
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      /*background-color: rgba(0,0,0,0.4); !* Black w/ opacity *!*/
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 50%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    canvas {
+      height: 100vh;
+      width: 100vw;
+    }
+    body {
+      background-image: url("fondo.jpg");
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar" style="display: none"></div>
+  <div style="background: white; width: fit-content; display: block; margin-left: auto; margin-right: auto;"><img src="logoContraco.png" style="display: block;margin-left: auto;margin-right: auto;"></div>
+
+  <div style="background: white; width: fit-content; display: block; margin-left: auto; margin-right: auto; padding: 20px"><h3 style="text-align: center">Cumplimos 5 años <br>Sonreí para poder ingresar</h3></div>
+
+  <div class="center-content page-container">
+
+    <div class="progress" id="loader">
+      <div class="indeterminate"></div>
+    </div>
+    <div style="position: relative" class="margin">
+      <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline width="100%"></video>
+      <canvas id="overlay" />
+    </div>
+
+
+
+
+    <!-- ssd_mobilenetv1_controls -->
+
+    <!-- ssd_mobilenetv1_controls -->
+
+    <!-- tiny_face_detector_controls -->
+
+    <!-- tiny_face_detector_controls -->
+
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="https://media.istockphoto.com/vectors/big-smile-emoticon-with-thumbs-up-vector-id1124532572?k=20&m=1124532572&s=612x612&w=0&h=IXpPDP4EXROUqjakNqxhq-pxrUURTO1jwy7SQKmP6Rw=" width="100%">
+      </div>
+
+    </div>
+
+
+
+
+  </body>
+
+  <script>
+
+    //Modal
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    // var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    // btn.onclick = function() {
+    //   modal.style.display = "block";
+    // }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // End Modal
+
+    let forwardTimes = []
+    let withBoxes = true
+
+    function onChangeHideBoundingBoxes(e) {
+      withBoxes = !$(e.target).prop('checked')
+    }
+
+    function updateTimeStats(timeInMs) {
+      forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30)
+      const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length
+      $('#time').val(`${Math.round(avgTimeInMs)} ms`)
+      $('#fps').val(`${faceapi.utils.round(1000 / avgTimeInMs)}`)
+    }
+
+    async function onPlay() {
+      const videoEl = $('#inputVideo').get(0)
+
+      if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+        return setTimeout(() => onPlay())
+
+
+      const options = getFaceDetectorOptions()
+
+      const ts = Date.now()
+
+      const result = await faceapi.detectSingleFace(videoEl, options).withFaceExpressions()
+
+      updateTimeStats(Date.now() - ts)
+
+      if (result) {
+        const canvas = $('#overlay').get(0)
+        const dims = faceapi.matchDimensions(canvas, videoEl, true)
+
+        const resizedResult = faceapi.resizeResults(result, dims)
+        const minConfidence = 0.05
+
+        // console.log("resizedResult-- ", resizedResult.expressions.happy  )
+        if (withBoxes) {
+          // faceapi.draw.drawDetections(canvas, resizedResult)
+
+          //Valido si esta feliz
+          if (resizedResult.expressions.happy > "0.95") {
+
+            console.log("isHappy")
+
+            redirectAfterSmile()
+
+            // faceapi.draw.drawDetections(canvas, resizedResult)
+          }
+        }
+        // faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence)
+
+      }
+
+      setTimeout(() => onPlay())
+    }
+
+    async function run() {
+      // load face detection and face expression recognition models
+      await changeFaceDetector(TINY_FACE_DETECTOR)
+      await faceapi.loadFaceExpressionModel('/')
+      changeInputSize(224)
+
+      // try to access users webcam and stream the images
+      // to the video element
+      const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
+      const videoEl = $('#inputVideo').get(0)
+      videoEl.srcObject = stream
+    }
+
+    function redirectAfterSmile() {
+      modal.style.display = "block";
+      // location.replace("https://media.istockphoto.com/vectors/big-smile-emoticon-with-thumbs-up-vector-id1124532572?k=20&m=1124532572&s=612x612&w=0&h=IXpPDP4EXROUqjakNqxhq-pxrUURTO1jwy7SQKmP6Rw=")
+    }
+
+    function updateResults() {}
+
+    $(document).ready(function() {
+      renderNavBar('#navbar', 'webcam_face_expression_recognition')
+      initFaceDetectionControls()
+      run()
+    })
+  </script>
+</body>
+</html>
