@@ -111,7 +111,7 @@ function renderNavBar(navbarId, exampleUri) {
   menuButton.classList.add('button-collapse', 'show-on-large')
   menuButton.setAttribute('data-activates', 'slide-out')
   const menuButtonIcon = document.createElement('img')
-  menuButtonIcon.src = 'menu_icon.png'
+  //menuButtonIcon.src = 'menu_icon.png'
   menuButton.appendChild(menuButtonIcon)
   navbar.appendChild(menuButton)
 
@@ -124,7 +124,7 @@ function renderNavBar(navbarId, exampleUri) {
   h5.innerHTML = 'face-api.js'
   // githubLink.appendChild(h5)
   const githubLinkIcon = document.createElement('img')
-  githubLinkIcon.src = 'github_link_icon.png'
+  //githubLinkIcon.src = 'github_link_icon.png'
   githubLink.appendChild(githubLinkIcon)
   li.appendChild(githubLink)
   menuContent.appendChild(li)
