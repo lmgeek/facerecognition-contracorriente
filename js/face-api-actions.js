@@ -5,6 +5,7 @@ let messages = new Array(
     "Hoy es tu temporada",
     "Todo es posible si lo crees",
     "Con Dios todo es posible",
+    "Te estabamos esperando",
     );
 
     let images = new Array(
