@@ -1,9 +1,6 @@
 .page-container {
-  left: 0;
-  right: 0;
-  margin: auto;
   margin-top: 20px;
-  /*padding-left: 280px;*/
+  padding-left: 0;
   display: inline-flex !important;
   width: 100%;
 }
@@ -34,7 +31,7 @@
 
 .margin {
   margin: 0 auto;
-  width: 90%;
+  width: 100%;
 }
 
 #overlay, .overlay {
