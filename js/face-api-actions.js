@@ -6,6 +6,13 @@ let messages = new Array(
     "Todo es posible si lo crees",
     "Con Dios todo es posible",
     );
+
+    let images = new Array(
+        "https://images.axios.com/7ilfSEQ9Cyv_XZz4mhGF8Pm9Muo=/fit-in/1366x1366/2022/06/09/1654800670169.gif",
+        "https://i.gifer.com/origin/df/dfb9a3bee3c80da9731d34b891364c2b.gif",
+        "https://c.tenor.com/eIqfSl5gwLIAAAAC/smile-big-smile.gif",
+        "https://c.tenor.com/Myn2OVjHwjYAAAAd/sloth-slow.gif",
+    );
     
     var msgCount = 0;
     
@@ -51,12 +58,14 @@ let messages = new Array(
                 
                 //Valido si esta feliz
                 if (resizedResult.expressions.happy > "0.98") {
+                    var context = canvas.getContext('2d');
                     
                     console.log(msgCount)
                     if(msgCount === 0 || msgCount > 1) {
-                        let message = randomMessage()
+                        let message = randomMessage(messages)
+                        let image = randomMessage(images)
                         msgCount++
-                        redirectAfterSmile(message)
+                        redirectAfterSmile(message, image)
                     }                
                     // faceapi.draw.drawDetections(canvas, resizedResult)
                 }
@@ -81,17 +90,18 @@ let messages = new Array(
         videoEl.srcObject = stream
     }
     
-    function redirectAfterSmile(message) {
+    function redirectAfterSmile(message, image) {
         modal.style.display = "block";
         document.getElementById("randomMessage").innerHTML = message
+        document.getElementById("randomImage").src = image
         // location.replace("https://media.istockphoto.com/vectors/big-smile-emoticon-with-thumbs-up-vector-id1124532572?k=20&m=1124532572&s=612x612&w=0&h=IXpPDP4EXROUqjakNqxhq-pxrUURTO1jwy7SQKmP6Rw=")
     }
     
     function updateResults() {}
     
-    function randomMessage() {
-        var randomNum = Math.floor(Math.random() * messages.length);
-        return messages[randomNum];
+    function randomMessage(valueArray) {
+        var randomNum = Math.floor(Math.random() * valueArray.length);
+        return valueArray[randomNum];
     }
     
     $(document).ready(function() {
