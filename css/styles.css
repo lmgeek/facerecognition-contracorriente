@@ -15,11 +15,6 @@
   }
 }
 
-#navbar {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
 
 .center-content {
   display: flex;
@@ -27,15 +22,6 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.side-by-side {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.side-by-side >* {
-  margin: 0 5px;
 }
 
 .bold {
@@ -48,23 +34,7 @@
 
 .margin {
   margin: 0 auto;
-  width: 50%;
-}
-
-.button-sm {
-  padding: 0 10px !important;
-}
-
-.pad-sides-sm {
-  padding: 0 8px !important;
-}
-
-#github-link {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid;
-  margin-bottom: 10px;
+  width: 90%;
 }
 
 #overlay, .overlay {
@@ -77,10 +47,3 @@
   margin: 10px;
 }
 
-input[type="file"]::-webkit-file-upload-button {
-    background: #26a69a;
-    border: 1px solid gray;
-    cursor: pointer;
-    color: #fff;
-    border-radius: .2em;
-}
