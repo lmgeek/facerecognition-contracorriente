@@ -12,6 +12,9 @@ let messages = new Array(
         "https://i.gifer.com/origin/df/dfb9a3bee3c80da9731d34b891364c2b.gif",
         "https://c.tenor.com/eIqfSl5gwLIAAAAC/smile-big-smile.gif",
         "https://c.tenor.com/Myn2OVjHwjYAAAAd/sloth-slow.gif",
+        "https://c.tenor.com/8ukkFrwvta0AAAAC/mr-bean-bean.gif",
+        "https://thumbs.gfycat.com/NeatMelodicDingo-size_restricted.gif",
+        "https://usercontent.one/wp/www.mammutagency.com/wp-content/uploads/2020/04/mammut_eduardo_bertone_studio_Michiyo_Sato_illustrator_illustration_agency_advertising_editorial_art_direction_representative_artist_cover_Smile-Giff-Animation.gif",
     );
     
     var msgCount = 0;
